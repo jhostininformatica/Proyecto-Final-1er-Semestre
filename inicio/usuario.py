@@ -1,48 +1,49 @@
-#Registro de usuario
-USUARIO = "jhostin"
-CONTRASEÑA = "cine1234"
+usuario_guardado = ""
+contraseña_guardada = ""
 
-def iniciar_sesion():
+def registrar_usuario(): #registro de usuario
+    global usuario_guardado, contraseña_guardada
+    print(" REGISTRO ")
+    usuario_guardado = input("Crear usuario: ").strip()#usuario nuevo
+    contraseña_guardada = input("Crear contraseña: ").strip()#contraseña nueva
+    print("Usuario registrado correctamente.")
 
-    print("\n INICIAR SESIÓN ")
-
-    usuario = input("Usuario: ") #ingreso del usuario
-    contraseña = input("Contraseña: ") #ingreso de la contraseña
-
-    if usuario == USUARIO and contraseña == CONTRASEÑA: 
-
-        print("\n Inicio de sesión exitoso") #continuar si todo esta correcto
-        return True
-
-    else:
-
-        print("\n Usuario o contraseña incorrectos") #seguir insistiendo si uno esta incorrecto
-        return False
-def menu():
-
-    while True:
-
-        print(""" INICIO
-1. Iniciar sesión
-2. Salir """)
-        
-        opcion = input("Seleccione una opción: ") #sección de opciones
-
-        if opcion == "1":
-            
-            acceso = iniciar_sesion()
-
-            if acceso:
-
-                print(""" BIENVENIDO """) #mensaje al ingresar todo correcto
-                break
-
-        elif opcion == "SALIR":
-
-            print("\n CHAO PESCAO") #mensaje al salir
-            break
-
+def iniciar_sesion():#números de intentos
+    intentos_maximos = 3
+    intentos = 0  
+    while intentos < intentos_maximos:
+        print(f" INICIAR SESIÓN (Intento {intentos + 1}/{intentos_maximos}) ")
+        usuario = input("Usuario: ").strip()
+        contraseña = input("Contraseña: ").strip()      
+        if usuario == usuario_guardado and contraseña == contraseña_guardada:
+            print("Acceso concedido.")#cerrar el maximo de intentos
+            return True
         else:
+            intentos += 1 #restar un intento al fallar 
+            intentos_restantes = intentos_maximos - intentos
+            print("Usuario o contraseña incorrectos.")
+            if intentos_restantes > 0:
+                print(f"Te quedan {intentos_restantes} intentos.") #mostrar el número de intentos restantes          
+    print("Acceso bloqueado. Has superado el límite de intentos.") #mostrar cuando ya no queden intentos
+    return False
 
-            print("\n Opción inválida") #mensaje al poner otra cosa no ingresable
+def menu(): #pantalla del menú
+     while True:
+        print("""    INICIO 
+        1. Iniciar sesión
+        2. Salir """)
+        
+        opcion = input("Seleccione una opción: ").strip().upper()
+        
+        if opcion == "1":     
+            if iniciar_sesion():
+                print(" BIENVENIDO ")
+                break 
+        elif opcion == "2" or opcion == "SALIR": #sale del sistema
+            print("Calabaza calabaza 🎃 cada quien para su casa ")
+            break
+        else:
+            print("Opción inválida. Intente de nuevo.")
+registrar_usuario()
 menu()
+
